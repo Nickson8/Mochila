@@ -55,6 +55,10 @@ void forca(int *w, int *v, int n, int W, uc *melhor){
     }
 }
 
+
+/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
+
+
 void swap(int *a, int *b){
     int temp = *a;
     *a = *b;
@@ -132,18 +136,31 @@ void guloso(int *w, int *v, int n, int W, uc *melhor){
 }
 
 
+/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
+
+
 int max(int a, int b){
     if(a >= b) return a;
     if(a < b) return b;
 }
 
+/**
+ * Função que usa de calculos de melhores casos anteriores para deci-
+ * dir qual é o melhor próximo caso até chegar nos valores do input
+ * 
+ * @param w -> Vetor que contém os pesos dos items
+ * @param v -> Vetor que contém os valores dos items
+ * @param n -> Número de items na mochila
+ * @param W -> Carga máxima da mochila
+ * @param melhor -> Melhor combinação de items
+ */
 void dynamic(int *w, int *v, int n, int W, uc *melhor){
     //Zerando o vetor "melhor"
     for (int i = 0; i < n; i++){
         melhor[i] = 0;
     }
 
-    //Tabela que guarda os melhores valores dependendo de um peso máximo
+    //Tabela que guarda os melhores valores dependendo de um peso máximo e do número de itens
     int tab[n+1][W+1];
 
     //Preenchendo "tab"
@@ -180,6 +197,9 @@ void dynamic(int *w, int *v, int n, int W, uc *melhor){
         }
     }
 }
+
+
+/*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
 
 
 int main(void){
