@@ -68,7 +68,7 @@ void swapF(float *a, float *b){
 }
 
 void quick_sort(float v[], int v2[], int ini, int fim){
-    int pivo = v[(ini+fim)/2];
+    float pivo = v[(ini+fim)/2];
     int i=ini, j=fim;
 
     do{
@@ -142,7 +142,7 @@ void dynamic(int *w, int *v, int n, int W, uc *melhor){
     for (int i = 0; i < n; i++){
         melhor[i] = 0;
     }
-    
+
     //Tabela que guarda os melhores valores dependendo de um peso máximo
     int tab[n+1][W+1];
 
