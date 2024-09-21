@@ -99,6 +99,11 @@ void quick_sort(float v[], int v2[], int ini, int fim){
  * @param melhor -> Melhor combinação de items
  */
 void guloso(int *w, int *v, int n, int W, uc *melhor){
+    //Zerando o vetor "melhor"
+    for (int i = 0; i < n; i++){
+        melhor[i] = 0;
+    }
+
     //Vetor que contém as razões valor/peso
     float razoes[n];
     //Vetor com os índices dos items
@@ -127,6 +132,47 @@ void guloso(int *w, int *v, int n, int W, uc *melhor){
 }
 
 
+int max(int a, int b){
+    if(a >= b) return a;
+    if(a < b) return b;
+}
+
+void dynamic(int *w, int *v, int n, int W, uc *melhor){
+    //Zerando o vetor "melhor"
+    for (int i = 0; i < n; i++){
+        melhor[i] = 0;
+    }
+    
+    //Tabela que guarda os melhores valores dependendo de um peso máximo
+    int tab[n+1][W+1];
+
+    //Preenchendo "tab"
+    for(int i=0; i<n+1; i++){
+        for(int p=0; p<W+1; p++){
+            //Número de items é 0 ou peso máximo atual é 0
+            if(i==0 || p==0){
+                tab[i][p] = 0;
+            }
+            //Item atual cabe no peso máximo atual "p"
+            else if(w[i-1] <= p){
+                // Decide se o melhor valor para o peso "p" com "i" items é
+                // o já calculado anteriormente (não adiciona o item atual)
+                // ou se é melhor adicionar o item atual, que para fazer isso
+                // adicionamos o valor dele ao máximo de valor que pode ser
+                // colocado com o peso que sobra, o que já foi calculado e está
+                // em "tab"
+                tab[i][p] = max(tab[i-1][p], v[i-1]+tab[i-1][p-w[i-1]]);
+            }
+            //Nenhuma das opções anteriores
+            else {
+                //Recebe a melhor solução anterior para um mesmo peso "p"
+                tab[i][p] = tab[i-1][p];
+            }
+        }
+    }
+    printf("\n%d\n", tab[n][W]);
+}
+
 
 int main(void){
     //Declaração do número de cidades ("n") e o peso máximo ("W")
@@ -152,23 +198,29 @@ int main(void){
     forca(w, v, n, W, melhor);
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
-            printf("Item %d: %d %d\n", i+1, v[i], w[i]);
+            printf("Item %d: valor: %d, peso: %d\n", i+1, v[i], w[i]);
         }
     }
 
-    //Zerando o vetor "melhor"
-    for (int i = 0; i < n; i++){
-        melhor[i] = 0;
-    }
 
     //Printando o resultado do método guloso
     printf("\n\n"); 
     guloso(w, v, n, W, melhor);
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
-            printf("Item %d: %d %d\n", i+1, v[i], w[i]);
+            printf("Item %d: valor: %d, peso: %d\n", i+1, v[i], w[i]);
         }
     }
+
+
+    //Printando o resultado do método guloso
+    printf("\n\n"); 
+    //dynamic(w, v, n, W, melhor);
+    /*for(int i=0; i<n; i++){
+        if(melhor[i] == 1){
+            printf("Item %d: valor: %d, peso: %d\n", i+1, v[i], w[i]);
+        }
+    }*/
 
     free(w);
     free(v);
