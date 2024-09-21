@@ -170,7 +170,15 @@ void dynamic(int *w, int *v, int n, int W, uc *melhor){
             }
         }
     }
-    printf("\n%d\n", tab[n][W]);
+
+    //Olhando, a partir do resultado final, quais itens foram adiconados
+    int p = W;
+    for (int i = n; i > 0; i--){
+        if (tab[i][p] != tab[i-1][p]){
+            melhor[i-1] = 1;
+            p -= w[i-1];
+        }
+    }
 }
 
 
@@ -189,8 +197,8 @@ int main(void){
 
     //Lendo os valores de para preencher "v" e "w"
     for(int i=0; i<n; i++){
-        printf("Valor e peso do item %d: ", i+1);
-        scanf("%d %d", &v[i], &w[i]);
+        printf("Peso e valor do item %d: ", i+1);
+        scanf("%d %d", &w[i], &v[i]);
     }
 
     //Printando o resultado do método da força bruta
@@ -198,7 +206,7 @@ int main(void){
     forca(w, v, n, W, melhor);
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
-            printf("Item %d: valor: %d, peso: %d\n", i+1, v[i], w[i]);
+            printf("Item %d: peso: %d, valor: %d\n", i+1, w[i], v[i]);
         }
     }
 
@@ -208,19 +216,19 @@ int main(void){
     guloso(w, v, n, W, melhor);
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
-            printf("Item %d: valor: %d, peso: %d\n", i+1, v[i], w[i]);
+            printf("Item %d: peso: %d, valor: %d\n", i+1, w[i], v[i]);
         }
     }
 
 
     //Printando o resultado do método guloso
     printf("\n\n"); 
-    //dynamic(w, v, n, W, melhor);
-    /*for(int i=0; i<n; i++){
+    dynamic(w, v, n, W, melhor);
+    for(int i=0; i<n; i++){
         if(melhor[i] == 1){
-            printf("Item %d: valor: %d, peso: %d\n", i+1, v[i], w[i]);
+            printf("Item %d: peso: %d, valor: %d\n", i+1, w[i], v[i]);
         }
-    }*/
+    }
 
     free(w);
     free(v);
