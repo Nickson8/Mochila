@@ -1,2 +1,2 @@
 all:
-	gcc main.c -o alg; ./alg
+	gcc main.c -o alg; ./alg 

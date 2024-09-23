@@ -1,18 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 typedef unsigned char uc;
 
 
-/**
- * Função que gera e analisa todas as combinações de items possíveis
- * 
- * @param w -> Vetor que contém os pesos dos items
- * @param v -> Vetor que contém os valores dos items
- * @param n -> Número de items na mochila
- * @param W -> Carga máxima da mochila
- * @param melhor -> Melhor combinação de items
- */
 void forca(int *w, int *v, int n, int W, uc *melhor){
     //Variável que guarda a melhor soma de valores até o momento
     int max = 0;
@@ -92,16 +84,6 @@ void quick_sort(float v[], int v2[], int ini, int fim){
     if(i<fim) quick_sort(v, v2, i, fim);
 }
 
-/**
- * Função que analisa a razão valor/peso para decidir a melhor combi-
- * nação de items
- * 
- * @param w -> Vetor que contém os pesos dos items
- * @param v -> Vetor que contém os valores dos items
- * @param n -> Número de items na mochila
- * @param W -> Carga máxima da mochila
- * @param melhor -> Melhor combinação de items
- */
 void guloso(int *w, int *v, int n, int W, uc *melhor){
     //Zerando o vetor "melhor"
     for (int i = 0; i < n; i++){
@@ -144,16 +126,6 @@ int max(int a, int b){
     if(a < b) return b;
 }
 
-/**
- * Função que usa de cálculos de melhores casos anteriores para deci-
- * dir qual é o melhor próximo caso até chegar nos valores do input
- * 
- * @param w -> Vetor que contém os pesos dos items
- * @param v -> Vetor que contém os valores dos items
- * @param n -> Número de items na mochila
- * @param W -> Carga máxima da mochila
- * @param melhor -> Melhor combinação de items
- */
 void dynamic(int *w, int *v, int n, int W, uc *melhor){
     //Zerando o vetor "melhor"
     for (int i = 0; i < n; i++){
@@ -201,13 +173,12 @@ void dynamic(int *w, int *v, int n, int W, uc *melhor){
 
 /*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
 
-
 int main(void){
     //Declaração do número de itens ("n") e o peso máximo ("W")
     int n, W;
 
     //Leitura dos dados
-    printf("Valores de n e W: ");
+    //printf("Valores de n e W: ");
     scanf("%d %d", &n, &W);
 
     //Declarando e alocando memória para os vetores
@@ -217,38 +188,54 @@ int main(void){
 
     //Lendo os valores de para preencher "v" e "w"
     for(int i=0; i<n; i++){
-        printf("Peso e valor do item %d: ", i+1);
+        //printf("Peso e valor do item %d: ", i+1);
         scanf("%d %d", &w[i], &v[i]);
     }
-
     //Printando o resultado do método da força bruta
     printf("\n\n"); 
+    clock_t inicio_f, fim_f; 
+    inicio_f = clock(); 
     forca(w, v, n, W, melhor);
+    fim_f = clock(); 
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
             printf("Item %d: peso: %d, valor: %d\n", i+1, w[i], v[i]);
         }
     }
-
+    double tempo_f = (double)(fim_f - inicio_f) / CLOCKS_PER_SEC;
+    //printf("O tempo de execução do algoritmo da força bruta foi %lf", tempo_f); 
 
     //Printando o resultado do método guloso
     printf("\n\n"); 
+    clock_t inicio_g, fim_g; 
+    inicio_g = clock(); 
     guloso(w, v, n, W, melhor);
+    fim_g = clock();
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
             printf("Item %d: peso: %d, valor: %d\n", i+1, w[i], v[i]);
         }
     }
-
+    double tempo_g = (double)(fim_g - inicio_g) / CLOCKS_PER_SEC;
+    //printf("O tempo de execução do algoritmo guloso foi %lf", tempo_g); 
 
     //Printando o resultado do método programação dinâmica
     printf("\n\n"); 
+    clock_t inicio_d, fim_d; 
+    inicio_d = clock(); 
     dynamic(w, v, n, W, melhor);
+    fim_d = clock(); 
     for(int i=0; i<n; i++){
         if(melhor[i] == 1){
             printf("Item %d: peso: %d, valor: %d\n", i+1, w[i], v[i]);
         }
     }
+    double tempo_d = (double)(fim_d - inicio_d) / CLOCKS_PER_SEC;
+    //printf("O tempo de execução do algoritmo de programação dinâmica foi %lf\n", tempo_d); 
+
+    printf("O tempo de execução do algoritmo da força bruta foi %lf\n", tempo_f); 
+    printf("O tempo de execução do algoritmo guloso foi %lf\n", tempo_g); 
+    printf("O tempo de execução do algoritmo de programação dinâmica foi %lf\n", tempo_d); 
 
     free(w);
     free(v);
